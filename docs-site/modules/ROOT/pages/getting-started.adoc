@@ -1,0 +1,3 @@
+= Getting Started
+
+You've found a new page.

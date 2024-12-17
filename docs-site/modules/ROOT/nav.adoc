@@ -1,0 +1,7 @@
+* xref:getting-started.adoc[]
+
+* API
+** xref:api/courses.adoc[]
+
+* Data
+** xref:data/courses.adoc[]

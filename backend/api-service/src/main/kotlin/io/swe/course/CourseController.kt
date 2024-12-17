@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 class CourseController {
 
     @GetMapping("/hello")
-    fun module(): ResponseEntity<String> {
+    fun getCourses(): ResponseEntity<String> {
         return ResponseEntity.ok("hello from api");
     }
 

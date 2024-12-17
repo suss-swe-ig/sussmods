@@ -1,0 +1,20 @@
+site:
+  title: SUSSMods
+  start_page: sussmods::index.adoc
+content:
+  sources:
+  - url: ..
+    start_path: docs-site
+    branches: HEAD
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+  supplemental_files:
+  - path: ui.yml
+    contents: |
+      static_files:
+      - .nojekyll
+  - path: .nojekyll
+runtime:
+  fetch: true
