@@ -1,4 +1,8 @@
-* xref:getting-started.adoc[]
+* xref:contributing.adoc[]
+
+* Getting Started
+** xref:frontend/getting-started.adoc[Frontend]
+** xref:backend/getting-started.adoc[Backend]
 
 * API
 ** xref:api/courses.adoc[]

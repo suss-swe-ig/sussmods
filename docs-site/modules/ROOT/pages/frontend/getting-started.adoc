@@ -1,0 +1,15 @@
+= Getting Started
+
+Welcome to the project! This guide will help you set up the project and get it running on your local machine.
+
+== Prerequisites
+
+TODO
+
+== Installation Steps
+
+TODO
+
+== Troubleshooting
+
+TODO
