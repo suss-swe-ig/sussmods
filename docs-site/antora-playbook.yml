@@ -1,5 +1,5 @@
 site:
-  title: SUSSMods
+  title: SWE IG Dev Docs
   start_page: sussmods::index.adoc
 content:
   sources:
