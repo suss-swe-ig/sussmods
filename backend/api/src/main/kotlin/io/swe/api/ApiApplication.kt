@@ -1,11 +1,11 @@
-package io.swe
+package io.swe.api
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class ApiServiceApplication
+class ApiApplication
 
 fun main(args: Array<String>) {
-	runApplication<ApiServiceApplication>(*args)
+	runApplication<ApiApplication>(*args)
 }
