@@ -3,12 +3,25 @@
 Welcome to the project! This guide will help you set up the project and get it running on your local machine.
 
 == Prerequisites
-
-TODO
+- https://www.graalvm.org/release-notes/JDK_21/[GraalVM for JDK 21]
+- https://gradle.org/install/[Gradle]
+- https://www.postgresql.org/download/[PostgreSQL]
+- https://docs.docker.com/desktop/[Docker Desktop (Optional)]
 
 == Installation Steps
+. Create the database and user:
+```sql
+CREATE DATABASE sussmods;
+CREATE USER root WITH PASSWORD 'password';
+ALTER ROLE root SET search_path TO 'sussmods';
+GRANT ALL PRIVILEGES ON DATABASE sussmods TO root;
+```
 
-TODO
+. Start the application
+```sh
+./gradlew bootRun
+```
+
 
 == Troubleshooting
 
