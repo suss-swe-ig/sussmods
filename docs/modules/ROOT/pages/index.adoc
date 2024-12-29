@@ -1,3 +1,12 @@
-= Welcome!
+= SUSSMods
 
-You are home.
+**SUSSMods** is an open-source platform designed to help students rate their courses and plan their timetables effectively.
+
+
+== Features
+. **Course Information**: Access detailed information about courses, including prerequisites and descriptions.
+
+== Roadmap
+. **Enhanced Analytics**: Provide insights into popular modules and trends.
+. **Course Reviews**: Allow students to review and rate their courses.
+. **Timetable Planner**: Develop a user-friendly tool to plan and organize semester schedules.
