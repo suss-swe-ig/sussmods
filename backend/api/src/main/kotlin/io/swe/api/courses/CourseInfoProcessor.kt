@@ -29,7 +29,7 @@ class CourseInfoProcessor(
 
                     courseInfoService.upsert(courseInfo)
                 } catch (e: Exception) {
-                    println("failed to download course: $code")
+                    println("failed to download course: $code, error: ${e.message}")
                 }
             }
         }
