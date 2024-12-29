@@ -12,17 +12,34 @@ class CourseInfoRepository(
     private val objectMapper: ObjectMapper
 ) {
 
-    fun pageAll(cursor: Long? = null): List<CourseInfo> {
-        val sql = """
-            SELECT * 
-            FROM course_info
-            WHERE id > ?
-            ORDER BY id
-            LIMIT 10
-        """
+    fun pageAll(
+        cursor: Long? = null,
+        code: String? = null,
+        name: String? = null
+    ): List<CourseInfo> {
+        var baseQuery = "SELECT * FROM course_info where 1=1"
+
+        val params = mutableListOf<Any>()
+
+        if (cursor != null) {
+            baseQuery += " AND id > ?"
+            params.add(cursor)
+        }
+
+        if (code != null) {
+            baseQuery += " AND code = ?"
+            params.add(code.uppercase())
+        }
+
+        if (name != null) {
+            baseQuery += " AND UPPER(name) LIKE ?"
+            params.add("%${name.uppercase()}%")
+        }
+
+        baseQuery += " ORDER BY id LIMIT 10"
 
         return jdbcTemplate.query(
-            sql,
+            baseQuery,
             { rs, _ ->
                 CourseInfo(
                     id = rs.getLong("id"),
@@ -38,7 +55,7 @@ class CourseInfoRepository(
                     learningOutcome = objectMapper.readValue(rs.getString("learning_outcome"))
                 )
             },
-            cursor ?: 0L
+            *params.toTypedArray()
         )
     }
 

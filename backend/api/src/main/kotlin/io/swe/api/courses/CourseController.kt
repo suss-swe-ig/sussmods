@@ -13,7 +13,7 @@ import java.security.MessageDigest
 
 
 @RestController
-@RequestMapping("/v1/courses")
+@RequestMapping("/api/v1/courses")
 class CourseController(
     private val courseInfoProcessor: CourseInfoProcessor,
     private val courseInfoService: CourseInfoService,
@@ -26,8 +26,10 @@ class CourseController(
     @GetMapping("/info")
     fun getCourseInfo(
         @RequestParam("cursor", required = false) cursor: Long?,
+        @RequestParam("code", required = false) code: String?,
+        @RequestParam("name", required = false) name: String?,
     ): List<CourseInfo> {
-        return courseInfoService.pageAll(cursor)
+        return courseInfoService.pageAll(cursor, code, name)
     }
 
     @PostMapping("/update-all")

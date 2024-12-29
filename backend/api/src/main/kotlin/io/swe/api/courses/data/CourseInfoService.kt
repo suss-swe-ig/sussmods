@@ -9,8 +9,12 @@ class CourseInfoService(
     private val repository: CourseInfoRepository
 ) {
 
-    fun pageAll(cursor: Long?): List<CourseInfo> {
-        return repository.pageAll(cursor)
+    fun pageAll(
+        cursor: Long? = null,
+        code: String? = null,
+        name: String? = null
+    ): List<CourseInfo> {
+        return repository.pageAll(cursor, code, name)
     }
 
     @Transactional
