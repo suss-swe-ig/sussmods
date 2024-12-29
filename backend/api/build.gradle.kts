@@ -61,7 +61,7 @@ tasks.withType<Test> {
 graalvmNative {
     binaries {
         named("main") {
-            buildArgs.add("-H:ReflectionConfigurationFiles=reflect-config.json")
+            buildArgs.add("-H:ReflectionConfigurationFiles=${projectDir}/reflect-config.json")
         }
     }
 }

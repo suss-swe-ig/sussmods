@@ -1,6 +1,7 @@
 package io.swe.api.courses.model
 
 data class CourseInfo(
+    val id: Long,
     val code: String,
     val name: String,
     val level: String,
@@ -13,6 +14,7 @@ data class CourseInfo(
     val learningOutcome: List<String>
 ) {
     class Builder {
+        private var id: Long = 0L
         private var code: String = ""
         private var name: String = ""
         private var level: String = ""
@@ -24,6 +26,7 @@ data class CourseInfo(
         private var textbooks: List<String> = emptyList()
         private var learningOutcome: List<String> = emptyList()
 
+        fun setId(id: Long) = apply { this.id = id }
         fun setCode(code: String) = apply { this.code = code }
         fun setName(name: String) = apply { this.name = name }
         fun setLevel(level: String) = apply { this.level = level }
@@ -36,6 +39,7 @@ data class CourseInfo(
         fun setLearningOutcome(learningOutcome: List<String>) = apply { this.learningOutcome = learningOutcome }
 
         fun build() = CourseInfo(
+            id = id,
             code = code,
             name = name,
             level = level,

@@ -21,6 +21,7 @@ class CourseInfoExtractor {
             "Assessment Strategies - "
         )
 
+        val courseCodePattern = Regex("\\b[A-Z]{3}\\d+\\b")
         val sectionPattern = "(${sections.joinToString("|")})\\s*(.*)".toRegex()
         val pagePattern = "Page \\d+ of \\d+".toRegex()
         val isbnRegex = "ISBN[-\\s]?\\d+".toRegex()
@@ -32,8 +33,7 @@ class CourseInfoExtractor {
         BufferedReader(StringReader(text))
             .lineSequence()
             .forEach { line ->
-                val coursePattern = Regex("\\b[A-Z]{3}\\d{3}\\b")
-                val matchResult = coursePattern.find(line)
+                val matchResult = courseCodePattern.find(line)
                 matchResult?.let { courses.add(it.value) }
             }
 
