@@ -1,0 +1,90 @@
+name: Build and Deploy to EC2
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Project
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+
+      - name: Build Native Image
+        run: ./gradlew nativeCompile
+        working-directory: ./backend/api
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app
+          path: ./backend/api/build/native/nativeCompile/api
+
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-24.04
+    needs: build
+
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-1
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-duration-seconds: 1800
+          role-session-name: DeployToEC2Session
+          role-skip-session-tagging: true
+
+      - name: Get GitHub Actions Runner IP
+        id: ip
+        uses: haythem/public-ip@v1.3
+
+      - name: Whitelist Runner IP
+        run: |
+          aws ec2 authorize-security-group-ingress \
+            --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} \
+            --protocol tcp \
+            --port 22 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
+
+      - name: Install SSH Key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Copy Files to EC2
+        run: |
+          rsync -e "ssh -o StrictHostKeyChecking=no" -arvc . ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/tmp/app/sussmods/
+
+      - name: Deploy Application on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+          sudo mv /tmp/app/sussmods/api /var/www/sussmods/api
+          sudo chmod +x /var/www/sussmods/api
+          sudo systemctl restart api-service.service
+          EOF
+          
+      - name: Remove Whitelisted IP
+        if: always()
+        run: |
+          aws ec2 revoke-security-group-ingress \
+            --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} \
+            --protocol tcp \
+            --port 22 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
+            
